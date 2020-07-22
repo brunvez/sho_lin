@@ -1,0 +1,36 @@
+<% if flash.key?(:notice) %>
+  <p id="notice" class="alert alert-primary"><%= flash[:notice] %></p>
+<% end %>
+
+<h1>Shortened Links</h1>
+
+<% if @form_action.in?(%i[new edit]) %>
+  <%= render partial: 'form', locals: { shortened_link: @shortened_link, form_action: @form_action } %>
+<% end %>
+
+<div data-controller="shortened-links">
+  <button data-action="click->shortened-links#newLink" class="btn btn-primary">New Shortened Link</button>
+
+  <div class="row">
+    <div class="col-8">
+      <div class="row">
+        <div class="col"><b>Name</b></div>
+        <div class="col"><b>Shortened path</b></div>
+        <div class="col"><b>Original url</b></div>
+        <div class="col"></div>
+      </div>
+
+      <% @shortened_links.each do |shortened_link| %>
+        <div class="row">
+          <div class="col"><%= shortened_link.name %></div>
+          <div class="col"><%= shortened_link.shortened_path %></div>
+          <div class="col"><%= shortened_link.original_url %></div>
+          <div class="col">
+            <div class="btn btn-secondary" data-action="click->shortened-links#editLink" data-link-id="<%= shortened_link.id %>">Edit</div>
+            <div class="btn btn-danger" data-action="click->shortened-links#destroyLink" data-link-id="<%= shortened_link.id %>">Delete</div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="live-modal"
+     data-controller="shortened-link-form"
+     data-action="keydown->shortened-link-form#handleKeyDown"
+     data-shortened-link-form-link-id="<%= shortened_link.id %>"
+>
+  <div class="live-modal-backdrop" data-action="click->shortened-link-form#closeModal">
+    <div class="live-modal-content" data-action="click->shortened-link-form#trapClick">
+      <div class="live-modal-close" data-action="click->shortened-link-form#closeModal">&times;</div>
+      <% if form_action == :edit %>
+        <h2>Edit Shortened link</h2>
+      <% else %>
+        <h2>New Shortened link</h2>
+      <% end %>
+
+      <%= fields_for(:shortened_link, shortened_link) do |form| %>
+        <% if shortened_link.errors.any? %>
+          <div id="error_explanation">
+            <h5><%= pluralize(shortened_link.errors.count, "error") %> prohibited this shortened_link from being
+              saved:</h5>
+
+            <ul>
+              <% shortened_link.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= form.label :name %>
+          <%= form.text_field :name,
+                              class: "form-control",
+                              data: {
+                                  target: "shortened-link-form.name",
+                                  action: "input->shortened-link-form#validate",
+                                  reflex_permanent: true
+                              }
+          %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :shortened_path %>
+          <%= form.text_field :shortened_path,
+                              class: "form-control",
+                              data: {
+                                  target: "shortened-link-form.shortenedPath",
+                                  action: "input->shortened-link-form#validate",
+                                  reflex_permanent: true
+                              }
+          %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :original_url %>
+          <%= form.text_field :original_url,
+                              class: "form-control",
+                              data: {
+                                  target: "shortened-link-form.originalUrl",
+                                  action: "input->shortened-link-form#validate",
+                                  reflex_permanent: true
+                              }
+          %>
+        </div>
+
+        <button class="btn btn-primary" data-action="click->shortened-link-form#save">Save</button>
+      <% end %>
+    </div>
+  </div>
+</div>
+
